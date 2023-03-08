@@ -11,9 +11,7 @@ import itertools
 import argparse
 import logging
 import json
-import argparse
 from textwrap import indent
-
 import dateutil.parser
 try:  # Python 3.9
     from importlib import metadata
