@@ -41,17 +41,6 @@ class MuxDriver(mux.Driver):
         return DRIVER_TYPES
 
 
-# A dictionary of known driver names and types
-DRIVER_TYPES = dict(
-    bigquery=bigquery.Driver,
-    postgresql=postgresql.Driver,
-    sqlite=sqlite.Driver,
-    json=json.Driver,
-    null=null.Driver,
-    mux=MuxDriver,
-)
-
-
 class Client(kcidb.orm.Source):
     """Kernel CI report database client"""
 

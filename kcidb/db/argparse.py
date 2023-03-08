@@ -10,6 +10,42 @@ from kcidb.db import abstract, schematic, mux, \
     bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
 
 
+class MuxDriver(mux.Driver):
+    """Kernel CI multiplexing database driver"""
+
+    @classmethod
+    def get_doc(cls):
+        """
+        Get driver documentation.
+
+        Returns:
+            The driver documentation string.
+        """
+        return super().get_doc() + \
+            "\n            Example: postgresql bigquery:kcidb_01"
+
+    @classmethod
+    def get_drivers(cls):
+        """
+        Retrieve a dictionary of driver names and types available for driver's
+        control.
+
+        Returns:
+            A driver dictionary.
+        """
+        return DRIVER_TYPES
+
+
+# A dictionary of known driver names and types
+DRIVER_TYPES = dict(
+    bigquery=bigquery.Driver,
+    postgresql=postgresql.Driver,
+    sqlite=sqlite.Driver,
+    json=json.Driver,
+    null=null.Driver,
+    mux=MuxDriver,
+)
+
 
 class DBHelpAction(argparse.Action):
     """Argparse action outputting database string help and exiting."""
@@ -55,7 +91,7 @@ class DBHelpAction(argparse.Action):
         parser.exit()
 
 
-def argparse_add_args(parser, database=None):
+def add_args(parser, database=None):
     """
     Add common database arguments to an argument parser.
 
@@ -97,7 +133,7 @@ class ArgumentParser(kcidb.misc.ArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_add_args(self, database=database)
+        add_args(self, database=database)
 
 
 class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
@@ -118,7 +154,7 @@ class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_add_args(self, database=database)
+        add_args(self, database=database)
 
 
 class SplitOutputArgumentParser(kcidb.misc.SplitOutputArgumentParser):
@@ -139,7 +175,7 @@ class SplitOutputArgumentParser(kcidb.misc.SplitOutputArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_add_args(self, database=database)
+        add_args(self, database=database)
 
 
 # No, it's OK, pylint: disable=too-many-ancestors
