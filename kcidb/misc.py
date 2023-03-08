@@ -11,7 +11,6 @@ import itertools
 import argparse
 import logging
 import json
-import argumentparse
 from textwrap import indent
 
 import dateutil.parser

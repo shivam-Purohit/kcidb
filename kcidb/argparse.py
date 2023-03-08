@@ -151,7 +151,7 @@ def non_negative_int_or_inf(string):
     return value
 
 
-def argparse_output_add_args(parser):
+def output_add_args(parser):
     """
     Add JSON output arguments to a command-line argument parser.
 
@@ -189,7 +189,7 @@ class OutputArgumentParser(ArgumentParser):
             kwargs: Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_output_add_args(self)
+        output_add_args(self)
 
 
 class SplitOutputArgumentParser(OutputArgumentParser):
@@ -217,7 +217,7 @@ class SplitOutputArgumentParser(OutputArgumentParser):
         )
 
 
-def argparse_schema_add_args(parser, version_verb):
+def schema_add_args(parser, version_verb):
     """
     Add schema selection arguments to a command-line argument parser.
 
