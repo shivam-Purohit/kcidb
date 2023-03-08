@@ -16,7 +16,7 @@ from google.cloud import pubsub
 from google.api_core.exceptions import DeadlineExceeded
 import kcidb.io as io
 import kcidb.orm
-from kcidb import misc
+from kcidb import misc, argparse
 from kcidb.misc import LIGHT_ASSERTS
 
 
@@ -631,7 +631,7 @@ def io_subscriber_main():
         'kcidb-mq-io-subscriber - ' \
         'Kernel CI I/O data subscriber management tool'
     parser = argparse.SubscriberArgumentParser("I/O data", description=description)
-    misc.argparse_output_add_args(parser.subparsers["pull"])
+    argparse.output_add_args(parser.subparsers["pull"])
     args = parser.parse_args()
     subscriber = IOSubscriber(args.project, args.topic, args.subscription)
     if args.command == "init":

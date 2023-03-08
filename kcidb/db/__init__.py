@@ -15,32 +15,6 @@ from kcidb.db import abstract, schematic, mux, \
 LOGGER = logging.getLogger(__name__)
 
 
-class MuxDriver(mux.Driver):
-    """Kernel CI multiplexing database driver"""
-
-    @classmethod
-    def get_doc(cls):
-        """
-        Get driver documentation.
-
-        Returns:
-            The driver documentation string.
-        """
-        return super().get_doc() + \
-            "\n            Example: postgresql bigquery:kcidb_01"
-
-    @classmethod
-    def get_drivers(cls):
-        """
-        Retrieve a dictionary of driver names and types available for driver's
-        control.
-
-        Returns:
-            A driver dictionary.
-        """
-        return DRIVER_TYPES
-
-
 class Client(kcidb.orm.Source):
     """Kernel CI report database client"""
 
@@ -63,7 +37,7 @@ class Client(kcidb.orm.Source):
                                   driver
         """
         assert isinstance(database, str)
-        self.driver = misc.instantiate_spec(DRIVER_TYPES, database)
+        self.driver = misc.instantiate_spec(argparse.DRIVER_TYPES, database)
         assert all(io_schema <= io.SCHEMA
                    for io_schema in self.driver.get_schemas().values()), \
             "Driver has I/O schemas newer than the current package I/O schema"
