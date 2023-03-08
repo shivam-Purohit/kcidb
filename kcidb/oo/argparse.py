@@ -4,10 +4,11 @@ from abc import ABC, abstractmethod
 from functools import reduce
 from cached_property import cached_property
 import kcidb.db
+import kcidb
 from kcidb.misc import LIGHT_ASSERTS
 from kcidb.orm import Type, SCHEMA, Pattern, Source
 
-class ArgumentParser(kcidb.misc.ArgumentParser):
+class ArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common OO arguments added.
     """
@@ -28,7 +29,7 @@ class ArgumentParser(kcidb.misc.ArgumentParser):
         kcidb.orm.argparse_add_args(self)
 
 
-class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
+class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
     """
     Command-line argument parser for tools outputting JSON,
     with common OO arguments added.

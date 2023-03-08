@@ -7,7 +7,7 @@ import kcidb.orm
 import kcidb.misc
 from kcidb.misc import LIGHT_ASSERTS
 from kcidb.db import abstract, schematic, mux, \
-    bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
+    bigquery, postgresql, sqlite, json, null, misc, argparse # noqa: F401
 
 
 class MuxDriver(mux.Driver):
@@ -116,7 +116,7 @@ def add_args(parser, database=None):
     )
 
 
-class ArgumentParser(kcidb.misc.ArgumentParser):
+class ArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common database arguments added.
     """
@@ -136,7 +136,7 @@ class ArgumentParser(kcidb.misc.ArgumentParser):
         add_args(self, database=database)
 
 
-class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
+class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
     """
     Command-line argument parser for tools outputting JSON,
     with common database arguments added.
@@ -157,7 +157,7 @@ class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
         add_args(self, database=database)
 
 
-class SplitOutputArgumentParser(kcidb.misc.SplitOutputArgumentParser):
+class SplitOutputArgumentParser(kcidb.argparse.SplitOutputArgumentParser):
     """
     Command-line argument parser for tools outputting split-report streams,
     with common database arguments added.

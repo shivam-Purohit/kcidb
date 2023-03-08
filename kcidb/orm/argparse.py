@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 import jsonschema
 import kcidb.io as io
 import kcidb.misc
+import kcidb
 from kcidb.misc import LIGHT_ASSERTS
 
 # We'll get to it, pylint: disable=too-many-lines
@@ -1326,7 +1327,7 @@ def argparse_add_args(parser):
     )
 
 
-class ArgumentParser(kcidb.misc.ArgumentParser):
+class ArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common ORM arguments added.
     """
@@ -1343,7 +1344,7 @@ class ArgumentParser(kcidb.misc.ArgumentParser):
         argparse_add_args(self)
 
 
-class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
+class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
     """
     Command-line argument parser for tools outputting JSON,
     with common ORM arguments added.
