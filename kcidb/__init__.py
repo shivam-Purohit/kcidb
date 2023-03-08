@@ -5,7 +5,7 @@ import email
 import logging
 from kcidb.misc import LIGHT_ASSERTS
 # Silence flake8 "imported but unused" warning
-from kcidb import io, db, mq, orm, oo, monitor, tests, unittest, misc # noqa
+from kcidb import io, db, mq, orm, oo, monitor, tests, unittest, misc, argumentparse # noqa
 
 
 # Module's logger
@@ -184,7 +184,7 @@ def submit_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = \
         'kcidb-submit - Submit Kernel CI reports, print submission IDs'
-    parser = misc.ArgumentParser(description=description)
+    parser = argumentparse.ArgumentParser(description=description)
     parser.add_argument(
         '-p', '--project',
         help='ID of the Google Cloud project containing the message queue',
@@ -234,8 +234,8 @@ def schema_main():
     """Execute the kcidb-schema command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-schema - Output current or older I/O JSON schema'
-    parser = misc.OutputArgumentParser(description=description)
-    misc.argparse_schema_add_args(parser, "output")
+    parser = argumentparse.OutputArgumentParser(description=description)
+    argumentparse.argparse_schema_add_args(parser, "output")
     args = parser.parse_args()
     misc.json_dump(args.schema_version.json, sys.stdout, indent=args.indent,
                    seq=args.seq)
@@ -245,8 +245,8 @@ def validate_main():
     """Execute the kcidb-validate command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-validate - Validate I/O JSON data'
-    parser = misc.OutputArgumentParser(description=description)
-    misc.argparse_schema_add_args(parser, "validate against")
+    parser = argumentparse.OutputArgumentParser(description=description)
+    argumentparse.argparse_schema_add_args(parser, "validate against")
     args = parser.parse_args()
     misc.json_dump_stream(
         (
@@ -261,8 +261,8 @@ def upgrade_main():
     """Execute the kcidb-upgrade command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-upgrade - Upgrade I/O JSON data to current schema'
-    parser = misc.OutputArgumentParser(description=description)
-    misc.argparse_schema_add_args(parser, "upgrade")
+    parser = argumentparse.OutputArgumentParser(description=description)
+    argumentparse.argparse_schema_add_args(parser, "upgrade")
     args = parser.parse_args()
     misc.json_dump_stream(
         (
@@ -277,7 +277,7 @@ def count_main():
     """Execute the kcidb-count command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-count - Count number of objects in I/O JSON data'
-    parser = misc.ArgumentParser(description=description)
+    parser = argumentparse.ArgumentParser(description=description)
     parser.parse_args()
 
     for data in misc.json_load_stream_fd(sys.stdin.fileno()):
@@ -289,7 +289,7 @@ def merge_main():
     """Execute the kcidb-merge command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-merge - Upgrade and merge I/O data sets'
-    parser = misc.OutputArgumentParser(description=description)
+    parser = argumentparse.OutputArgumentParser(description=description)
     args = parser.parse_args()
 
     sources = [
