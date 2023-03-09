@@ -18,8 +18,6 @@ from kcidb import misc, argparse
 from kcidb.misc import LIGHT_ASSERTS
 
 
-# Module's logger
-LOGGER = logging.getLogger(__name__)
 
 def argparse_add_args(parser):
     """
