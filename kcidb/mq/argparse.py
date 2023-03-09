@@ -19,7 +19,7 @@ from kcidb.misc import LIGHT_ASSERTS
 
 
 
-def argparse_add_args(parser):
+def add_args(parser):
     """
     Add common message queue arguments to an argument parser.
 
@@ -53,10 +53,10 @@ class ArgumentParser(argparse.ArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_add_args(self)
+        add_args(self)
 
 
-def argparse_publisher_add_args(parser, data_name):
+def publisher_add_args(parser, data_name):
     """
     Add message queue publisher arguments to an argument parser.
 
@@ -64,7 +64,7 @@ def argparse_publisher_add_args(parser, data_name):
         parser:     The parser to add arguments to.
         data_name:  Name of the message queue data.
     """
-    argparse_add_args(parser)
+    add_args(parser)
     subparsers = parser.add_subparsers(dest="command",
                                        title="Available commands",
                                        metavar="COMMAND",
@@ -103,10 +103,10 @@ class PublisherArgumentParser(argparse.ArgumentParser):
         """
         super().__init__(*args, **kwargs)
         self.subparsers = {}
-        argparse_publisher_add_args(self, data_name)
+        publisher_add_args(self, data_name)
 
 
-def argparse_subscriber_add_args(parser, data_name):
+def subscriber_add_args(parser, data_name):
     """
     Add message queue subscriber arguments to an argument parser.
 
@@ -114,7 +114,7 @@ def argparse_subscriber_add_args(parser, data_name):
         parser:     The parser to add arguments to.
         data_name:  Name of the message queue data.
     """
-    argparse_add_args(parser)
+    add_args(parser)
     parser.add_argument(
         '-s', '--subscription',
         help='Name of the subscription',
@@ -181,4 +181,4 @@ class SubscriberArgumentParser(argparse.ArgumentParser):
         """
         super().__init__(*args, **kwargs)
         self.subparsers = {}
-        argparse_subscriber_add_args(self, data_name)
+        subscriber_add_args(self, data_name)

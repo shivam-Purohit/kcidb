@@ -19,7 +19,7 @@ from kcidb.misc import LIGHT_ASSERTS
 LOGGER = logging.getLogger(__name__)
 
 
-def argparse_add_args(parser):
+def add_args(parser):
     """
     Add common ORM arguments to an argument parser.
 
@@ -55,7 +55,7 @@ class ArgumentParser(kcidb.argparse.ArgumentParser):
             kwargs: Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_add_args(self)
+        add_args(self)
 
 
 class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
@@ -73,4 +73,4 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
             kwargs: Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        argparse_add_args(self)
+        add_args(self)

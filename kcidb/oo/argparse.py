@@ -25,8 +25,8 @@ class ArgumentParser(kcidb.argparse.ArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        kcidb.db.argparse_add_args(self, database=database)
-        kcidb.orm.argparse_add_args(self)
+        kcidb.db.add_args(self, database=database)
+        kcidb.orm.add_args(self)
 
 
 class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
@@ -47,6 +47,6 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        kcidb.db.argparse_add_args(self, database=database)
-        kcidb.orm.argparse_add_args(self)
+        kcidb.db.add_args(self, database=database)
+        kcidb.orm.add_args(self)
 
