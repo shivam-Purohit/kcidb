@@ -50,50 +50,6 @@ DRIVER_TYPES = dict(
     mux=MuxDriver,
 )
 
-class DBHelpAction(argparse.Action, DRIVER_TYPES):
-    """Argparse action outputting database string help and exiting."""
-    def __init__(self,
-                 option_strings,
-                 dest=argparse.SUPPRESS,
-                 default=argparse.SUPPRESS,
-                 help=None):
-        super().__init__(
-            option_strings=option_strings,
-            dest=dest,
-            default=default,
-            nargs=0,
-            help=help)
-
-    def __call__(self, parser, namespace, values, option_string=None):
-        print("KCIDB has several database drivers for both actual and "
-              "virtual databases.\n"
-              "You can specify a particular driver to use, and its "
-              "parameters, using the\n"
-              "-d/--database option.\n"
-              "\n"
-              "The format of the option value is <DRIVER>[:<PARAMS>], "
-              "where <DRIVER> is the\n"
-              "name of the driver, and <PARAMS> is a (sometimes optional) "
-              "driver-specific\n"
-              "parameter string.\n"
-              "\n"
-              "For example, \"-d bigquery:kernelci-production.kcidb_01\" "
-              "requests the use of\n"
-              "the \"bigquery\" database driver with the parameter string\n"
-              "\"kernelci-production.kcidb_01\", from which the driver "
-              "extracts the Google\n"
-              "Cloud project \"kernelci-production\" and the dataset "
-              "\"kcidb_01\" to connect to.\n"
-              "\n"
-              "Available drivers and format of their parameter strings "
-              "follow.\n")
-        for name, driver in DRIVER_TYPES.items():
-            print(f"\n{name!r} driver\n" +
-                  "-" * (len(name) + 9) + "\n" +
-                  driver.get_doc())
-        parser.exit()
-
-
 class Client(kcidb.orm.Source):
     """Kernel CI report database client"""
 
@@ -116,7 +72,7 @@ class Client(kcidb.orm.Source):
                                   driver
         """
         assert isinstance(database, str)
-        self.driver = misc.instantiate_spec(argparse.DRIVER_TYPES, database)
+        self.driver = misc.instantiate_spec(DRIVER_TYPES, database)
         assert all(io_schema <= io.SCHEMA
                    for io_schema in self.driver.get_schemas().values()), \
             "Driver has I/O schemas newer than the current package I/O schema"
@@ -412,7 +368,7 @@ def dump_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = \
         'kcidb-db-dump - Dump all data from Kernel CI report database'
-    parser = argparse.SplitOutputArgumentParser(description=description)
+    parser = argparse.SplitOutputArgumentParser(DRIVER_TYPES, description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if not client.is_initialized():
@@ -428,7 +384,7 @@ def query_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = \
         "kcidb-db-query - Query objects from Kernel CI report database"
-    parser = argparse.QueryArgumentParser(description=description)
+    parser = argparse.QueryArgumentParser(DRIVER_TYPES, description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if not client.is_initialized():
@@ -451,7 +407,7 @@ def load_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = \
         'kcidb-db-load - Load reports into Kernel CI report database'
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if not client.is_initialized():
@@ -467,7 +423,7 @@ def schemas_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = 'kcidb-db-schemas - List available database schemas ' \
         '(as <DB>: <I/O>)'
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
     args = parser.parse_args()
     client = Client(args.database)
     curr_version = client.get_schema()[0] if client.is_initialized() else None
@@ -489,7 +445,7 @@ def init_main():
     """Execute the kcidb-db-init command-line tool"""
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = 'kcidb-db-init - Initialize a Kernel CI report database'
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
     parser.add_argument(
         '--ignore-initialized',
         help='Do not fail if the database is already initialized.',
@@ -521,7 +477,7 @@ def upgrade_main():
     """Execute the kcidb-db-upgrade command-line tool"""
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = 'kcidb-db-upgrade - Upgrade database schema'
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
     parser.add_argument(
         '-s', '--schema',
         metavar="VERSION",
@@ -557,7 +513,7 @@ def cleanup_main():
     """Execute the kcidb-db-cleanup command-line tool"""
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = 'kcidb-db-cleanup - Cleanup a Kernel CI report database'
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
     parser.add_argument(
         '--ignore-not-initialized',
         help='Do not fail if the database is not initialized.',
@@ -586,7 +542,7 @@ def empty_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = 'kcidb-db-empty - Remove all data from a ' \
         'Kernel CI report database'
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if client.is_initialized():

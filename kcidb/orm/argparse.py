@@ -5,18 +5,39 @@ import textwrap
 import logging
 import argparse
 from abc import ABC, abstractmethod
+from . import Pattern
 import jsonschema
 import kcidb.io as io
 import kcidb.misc
 import kcidb
-import __init__ 
 from kcidb.misc import LIGHT_ASSERTS
 
 # We'll get to it, pylint: disable=too-many-lines
 
+class PatternHelpAction(argparse.Action):
+    """Argparse action outputting pattern string help and exiting."""
+    def __init__(self,
+                 option_strings,
+                 dest=argparse.SUPPRESS,
+                 default=argparse.SUPPRESS,
+                 help=None):
+        super().__init__(
+            option_strings=option_strings,
+            dest=dest,
+            default=default,
+            nargs=0,
+            help=help)
 
-# Module's logger
-LOGGER = logging.getLogger(__name__)
+    def __call__(self, parser, namespace, values, option_string=None):
+        print(
+            parser.Pattern.STRING_DOC +
+            "\n" +
+            "NOTE: Specifying object ID lists separately is not "
+            "supported using\n"
+            "      command-line tools. "
+            "Only inline ID lists are supported.\n"
+        )
+        parser.exit()
 
 
 def add_args(parser):
@@ -36,7 +57,7 @@ def add_args(parser):
     )
     parser.add_argument(
         '--pattern-help',
-        action=__init__.PatternHelpAction,
+        action= PatternHelpAction,
         help='Print pattern string documentation and exit.'
     )
 
