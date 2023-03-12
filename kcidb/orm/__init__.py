@@ -6,7 +6,7 @@ objects, but without the object-oriented interface.
 import re
 import textwrap
 import logging
-import argparse
+# import argparse
 from abc import ABC, abstractmethod
 import jsonschema
 import kcidb.io as io
@@ -158,6 +158,7 @@ _PATTERN_STRING_RE = re.compile(
     re.ASCII | re.VERBOSE
 )
 
+
 class Relation:
     """A parent/child relation between object types"""
 
@@ -180,6 +181,7 @@ class Relation:
         self.parent = parent
         self.child = child
         self.ref_fields = ref_fields
+
 
 class Type:
     """An object type"""
@@ -308,6 +310,7 @@ class Type:
         return tuple(data[field]
                      for field in self.parents[parent_type_name].ref_fields)
 
+
 class Schema:
     """A repository of recognized object types"""
 
@@ -402,7 +405,6 @@ class Schema:
                 type.add_relation(relation)
                 child_type.add_relation(relation)
 
-
     def validate(self, data):
         """
         Validate raw object-oriented data against the schema.
@@ -462,6 +464,7 @@ class Schema:
             ] +
             ["}\n"]
         )
+
 
 # The schema of the raw object-oriented data
 SCHEMA = Schema(
@@ -608,7 +611,7 @@ SCHEMA = Schema(
 )
 
 
-#TODO: Make Pattern immutable
+# TODO: Make Pattern immutable
 class Pattern:
     """A pattern matching objects in a data source"""
 
@@ -1276,7 +1279,6 @@ class Pattern:
         return pattern_set
 
 
-
 assert all(k.endswith("s") for k in io.SCHEMA.graph if k), \
     "Not all I/O object list names end with 's'"
 
@@ -1538,4 +1540,3 @@ class Cache(Source):
         }
         assert LIGHT_ASSERTS or SCHEMA.is_valid(response)
         return response
-

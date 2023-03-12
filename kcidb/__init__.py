@@ -4,6 +4,7 @@ import sys
 import email
 import logging
 from kcidb.misc import LIGHT_ASSERTS
+
 # Silence flake8 "imported but unused" warning
 from kcidb import io, db, mq, orm, oo, monitor, tests, unittest, misc, argparse # noqa
 
@@ -309,7 +310,7 @@ def notify_main():
     """Execute the kcidb-notify command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-notify - Generate notifications for specified objects'
-    parser = oo.ArgumentParser(database="json", description=description)
+    parser = oo.argparse.ArgumentParser(database="json", description=description)
     args = parser.parse_args()
     oo_client = oo.Client(db.Client(args.database))
     pattern_set = set()

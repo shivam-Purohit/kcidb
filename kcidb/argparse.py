@@ -1,25 +1,23 @@
 import math
 import re
-import os
-import atexit
-import tempfile
-import sys
-import traceback
-import itertools
 import argparse
 import logging
-import json
-import argparse
-from textwrap import indent
+# from textwrap import indent
+# import os
+# import atexit
+# import tempfile
+# import sys
+# import traceback
+# import itertools
+# import json
+# import dateutil.parser
+# from google.cloud import secretmanager
+# import jq
 
-
-import dateutil.parser
 try:  # Python 3.9
     from importlib import metadata
 except ImportError:  # Python 3.6
     import importlib_metadata as metadata
-from google.cloud import secretmanager
-import jq
 import kcidb.io as io
 
 # Module's logger
@@ -40,6 +38,7 @@ LOGGING_LEVEL_MAP = {
     for k, v in sorted(LOGGING_LEVEL_MAP.items(),
                        key=lambda i: i[1], reverse=True)
 }
+
 
 def logging_setup(level):
     """
@@ -100,7 +99,7 @@ class ArgumentParser(argparse.ArgumentParser):
         logging.basicConfig()
         logging_setup(LOGGING_LEVEL_MAP[args.log_level])
         return args
-    
+
 
 def non_negative_int(string):
     """

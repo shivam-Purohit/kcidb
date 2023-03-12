@@ -1,11 +1,12 @@
-import sys
-from abc import ABC, abstractmethod
-from functools import reduce
-from cached_property import cached_property
+# import sys
+# from abc import abstractmethod
+# from functools import reduce
+# from cached_property import cached_property
 import kcidb.db
 import kcidb
-from kcidb.misc import LIGHT_ASSERTS
-from kcidb.orm import Type, SCHEMA, Pattern, Source
+# from kcidb.misc import LIGHT_ASSERTS
+# from kcidb.orm import Type, SCHEMA, Pattern, Source
+
 
 class ArgumentParser(kcidb.argparse.ArgumentParser):
     """
@@ -48,4 +49,3 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
         super().__init__(*args, **kwargs)
         kcidb.db.add_args(self, database=database)
         kcidb.orm.add_args(self)
-

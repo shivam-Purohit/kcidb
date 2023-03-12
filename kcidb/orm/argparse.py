@@ -1,18 +1,17 @@
-
-
-import re
-import textwrap
-import logging
+# import re
+# import textwrap
+# import logging
 import argparse
 from abc import ABC, abstractmethod
-from . import Pattern
-import jsonschema
-import kcidb.io as io
+# from . import Pattern
+# import jsonschema
+# import kcidb.io as io
 import kcidb.misc
 import kcidb
-from kcidb.misc import LIGHT_ASSERTS
+# from kcidb.misc import LIGHT_ASSERTS
 
 # We'll get to it, pylint: disable=too-many-lines
+
 
 class PatternHelpAction(argparse.Action):
     """Argparse action outputting pattern string help and exiting."""
@@ -57,7 +56,7 @@ def add_args(parser):
     )
     parser.add_argument(
         '--pattern-help',
-        action= PatternHelpAction,
+        action=PatternHelpAction,
         help='Print pattern string documentation and exit.'
     )
 

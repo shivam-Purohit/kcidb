@@ -1,6 +1,6 @@
 """Kernel CI reporting - misc definitions"""
 
-import math
+# import math
 import re
 import os
 import atexit
@@ -14,13 +14,13 @@ import json
 from textwrap import indent
 
 import dateutil.parser
-try:  # Python 3.9
-    from importlib import metadata
-except ImportError:  # Python 3.6
-    import importlib_metadata as metadata
+# try:  # Python 3.9
+#     from importlib import metadata
+# except ImportError:  # Python 3.6
+#     import importlib_metadata as metadata
 from google.cloud import secretmanager
 import jq
-import kcidb.io as io
+# import kcidb.io as io
 
 # Module's logger
 LOGGER = logging.getLogger(__name__)
@@ -43,7 +43,6 @@ LOGGING_LEVEL_MAP = {
 
 # Check light assertions only, if True
 LIGHT_ASSERTS = not os.environ.get("KCIDB_HEAVY_ASSERTS", "")
-
 
 
 def format_exception_stack(exc):

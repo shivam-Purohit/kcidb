@@ -1,13 +1,14 @@
-import sys
-import logging
 import argparse
-import datetime
-import kcidb.io as io
-import kcidb.orm
 import kcidb.misc
-from kcidb.misc import LIGHT_ASSERTS
+import kcidb
 from kcidb.db import abstract, schematic, mux, \
-    bigquery, postgresql, sqlite, json, null, misc, argparse # noqa: F401
+    bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
+# import kcidb.orm
+# import sys
+# import logging
+# import datetime
+# import kcidb.io as io
+# from kcidb.misc import LIGHT_ASSERTS
 
 
 class DBHelpAction(argparse.Action):
@@ -55,11 +56,9 @@ class DBHelpAction(argparse.Action):
         parser.exit()
 
 
-
 def add_args(parser, database=None):
     """
     Add common database arguments to an argument parser.
-
     Args:
         parser:     The parser to add arguments to.
         database:   The default database specification to use.
@@ -108,7 +107,7 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
     with common database arguments added.
     """
 
-    def __init__(self, driver_types, *args, database=None, **kwargs):
+    def __init__(self, *args, database=None, **kwargs):
         """
         Initialize the parser, adding JSON output arguments.
 
@@ -119,7 +118,6 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
                         make database specification required.
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
-        self.DRIVER_TYPES = driver_types
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
 
@@ -130,7 +128,7 @@ class SplitOutputArgumentParser(kcidb.argparse.SplitOutputArgumentParser):
     with common database arguments added.
     """
 
-    def __init__(self, driver_types, *args, database=None, **kwargs):
+    def __init__(self, *args, database=None, **kwargs):
         """
         Initialize the parser, adding split-report output arguments.
 
@@ -141,7 +139,6 @@ class SplitOutputArgumentParser(kcidb.argparse.SplitOutputArgumentParser):
                         make database specification required.
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
-        self.DRIVER_TYPES = driver_types
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
 
@@ -152,7 +149,7 @@ class QueryArgumentParser(SplitOutputArgumentParser):
     Command-line argument parser with common database query arguments added.
     """
 
-    def __init__(self, driver_types, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Initialize the parser, adding common database query arguments.
 
@@ -162,7 +159,6 @@ class QueryArgumentParser(SplitOutputArgumentParser):
             kwargs: Keyword arguments to initialize the parent
                     SplitOutputArgumentParser with.
         """
-        self.DRIVER_TYPES = driver_types
         super().__init__(*args, **kwargs)
 
         self.add_argument(

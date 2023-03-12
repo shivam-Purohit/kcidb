@@ -2,17 +2,19 @@
 
 import sys
 import logging
-import argparse
 import datetime
 import kcidb.io as io
 import kcidb.orm
 import kcidb.misc
+from kcidb.db.argparse import QueryArgumentParser
+from kcidb import argparse
 from kcidb.misc import LIGHT_ASSERTS
 from kcidb.db import abstract, schematic, mux, \
     bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
 
 # Module's logger
 LOGGER = logging.getLogger(__name__)
+
 
 class MuxDriver(mux.Driver):
     """Kernel CI multiplexing database driver"""
@@ -49,6 +51,7 @@ DRIVER_TYPES = dict(
     null=null.Driver,
     mux=MuxDriver,
 )
+
 
 class Client(kcidb.orm.Source):
     """Kernel CI report database client"""
@@ -368,7 +371,7 @@ def dump_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = \
         'kcidb-db-dump - Dump all data from Kernel CI report database'
-    parser = argparse.SplitOutputArgumentParser(DRIVER_TYPES, description=description)
+    parser = argparse.SplitOutputArgumentParser(description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if not client.is_initialized():
@@ -384,7 +387,7 @@ def query_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = \
         "kcidb-db-query - Query objects from Kernel CI report database"
-    parser = argparse.QueryArgumentParser(DRIVER_TYPES, description=description)
+    parser = QueryArgumentParser(description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if not client.is_initialized():

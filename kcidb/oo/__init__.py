@@ -11,6 +11,7 @@ from kcidb.misc import LIGHT_ASSERTS
 from kcidb.orm import Type, SCHEMA, Pattern, Source
 import argparse
 
+
 class Object:
     """An object-oriented representation of a database object"""
 
