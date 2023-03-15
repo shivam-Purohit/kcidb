@@ -14,7 +14,7 @@ import argparse
 # from google.api_core.exceptions import DeadlineExceeded
 # import kcidb.io as io
 # import kcidb.orm
-from kcidb import argparse
+import kcidb
 # from kcidb.misc import LIGHT_ASSERTS
 
 
@@ -37,7 +37,7 @@ def add_args(parser):
     )
 
 
-class ArgumentParser(argparse.ArgumentParser):
+class ArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common message queue arguments added.
     """
@@ -85,7 +85,7 @@ def publisher_add_args(parser, data_name):
     )
 
 
-class PublisherArgumentParser(argparse.ArgumentParser):
+class PublisherArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common message queue arguments added.
     """
@@ -149,7 +149,7 @@ def subscriber_add_args(parser, data_name):
         '-m',
         '--messages',
         metavar="NUMBER",
-        type=argparse.non_negative_int_or_inf,
+        type=kcidb.argparse.non_negative_int_or_inf,
         help='Pull maximum NUMBER of messages, or "inf" for infinity. '
              'Default is 1.',
         default=1,
@@ -162,7 +162,7 @@ def subscriber_add_args(parser, data_name):
     )
 
 
-class SubscriberArgumentParser(argparse.ArgumentParser):
+class SubscriberArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with message queue subscriber arguments
     added.
