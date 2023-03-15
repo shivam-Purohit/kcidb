@@ -6,7 +6,6 @@ import json
 import logging
 import threading
 import sys
-import argparse
 import email
 import email.message
 import email.policy
@@ -14,7 +13,7 @@ from abc import ABC, abstractmethod
 from google.cloud import pubsub
 from google.api_core.exceptions import DeadlineExceeded
 import kcidb.io as io
-import kcidb.orm 
+import kcidb.orm
 from kcidb.argparse import output_add_args
 from kcidb.orm.argparse import PatternHelpAction
 from .argparse import SubscriberArgumentParser, PublisherArgumentParser
@@ -633,7 +632,7 @@ def io_subscriber_main():
         'kcidb-mq-io-subscriber - ' \
         'Kernel CI I/O data subscriber management tool'
     parser = SubscriberArgumentParser("I/O data",
-                                       description=description)
+                                      description=description)
     output_add_args(parser.subparsers["pull"])
     args = parser.parse_args()
     subscriber = IOSubscriber(args.project, args.topic, args.subscription)
@@ -656,7 +655,7 @@ def pattern_publisher_main():
         'kcidb-mq-pattern-publisher - ' \
         'Kernel CI ORM pattern publisher management tool'
     parser = PublisherArgumentParser("ORM patterns",
-                                      description=description)
+                                     description=description)
     parser.subparsers["publish"].add_argument(
         '--pattern-help',
         action=PatternHelpAction,
@@ -732,7 +731,7 @@ def email_subscriber_main():
         'kcidb-mq-email-subscriber - ' \
         'Kernel CI email queue subscriber management tool'
     parser = SubscriberArgumentParser("email",
-                                               description=description)
+                                      description=description)
     args = parser.parse_args()
     subscriber = EmailSubscriber(args.project, args.topic, args.subscription)
     if args.command == "init":

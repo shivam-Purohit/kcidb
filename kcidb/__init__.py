@@ -310,7 +310,8 @@ def notify_main():
     """Execute the kcidb-notify command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-notify - Generate notifications for specified objects'
-    parser = oo.argparse.ArgumentParser(database="json", description=description)
+    parser = oo.argparse.ArgumentParser(database="json",
+                                        description=description)
     args = parser.parse_args()
     oo_client = oo.Client(db.Client(args.database))
     pattern_set = set()

@@ -2,7 +2,6 @@
 # import textwrap
 # import logging
 import argparse
-from abc import ABC, abstractmethod
 # from . import Pattern
 # import jsonschema
 # import kcidb.io as io
