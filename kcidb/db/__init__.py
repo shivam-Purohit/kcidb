@@ -6,10 +6,9 @@ import datetime
 import kcidb.io as io
 import kcidb.orm
 import kcidb.misc
-from kcidb.db.argparse import QueryArgumentParser
-from kcidb import argparse
 from kcidb.misc import LIGHT_ASSERTS
-from kcidb.db import abstract, schematic, mux, \
+from .argparse import QueryArgumentParser
+from kcidb.db import abstract, schematic, mux, argparse, \
     bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
 
 # Module's logger

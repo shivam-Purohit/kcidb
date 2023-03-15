@@ -1,6 +1,6 @@
 import argparse
 import kcidb.misc
-import kcidb
+import kcidb.argparse
 from kcidb.db import abstract, schematic, mux, \
     bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
 # import kcidb.orm
@@ -97,6 +97,8 @@ class ArgumentParser(kcidb.argparse.ArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         self.DRIVER_TYPES = driver_types
+        print("args:", args)
+        print("kwargs:", kwargs)
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
 

@@ -215,7 +215,7 @@ def query_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = \
         "kcidb-query - Query Kernel CI reports"
-    parser = db.QueryArgumentParser(description=description)
+    parser = db.argparse.QueryArgumentParser(description=description)
     args = parser.parse_args()
     client = Client(database=args.database)
     query_iter = client.query_iter(
