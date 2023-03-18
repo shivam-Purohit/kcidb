@@ -4,9 +4,11 @@ import sys
 import email
 import logging
 from kcidb.misc import LIGHT_ASSERTS
+from kcidb.db import DRIVER_TYPES
 
 # Silence flake8 "imported but unused" warning
-from kcidb import io, db, mq, orm, oo, monitor, tests, unittest, misc, argparse # noqa
+from kcidb import io, db, orm, oo, monitor, tests, unittest, misc, argparse # noqa
+from kcidb.mq import IOPublisher
 
 
 # Module's logger
@@ -57,7 +59,7 @@ class Client:
             if not self.db_client.is_initialized():
                 raise DatabaseNotInitialized()
         self.mq_publisher = \
-            mq.IOPublisher(project_id, topic_name) \
+            IOPublisher(project_id, topic_name) \
             if project_id and topic_name else None
 
     def submit(self, data):
@@ -331,8 +333,9 @@ def ingest_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-ingest - Load data into a (new) database and ' \
         'generate notifications for new and modified objects'
-    parser = db.ArgumentParser(database="sqlite::memory:",
-                               description=description)
+    parser = db.argparse.ArgumentParser(driver_types=DRIVER_TYPES,
+                                        database="sqlite::memory:",
+                                        description=description)
     args = parser.parse_args()
 
     db_client = db.Client(args.database)

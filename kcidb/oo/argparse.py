@@ -1,11 +1,6 @@
-# import sys
-# from abc import abstractmethod
-# from functools import reduce
-# from cached_property import cached_property
-import kcidb.db
-import kcidb
-# from kcidb.misc import LIGHT_ASSERTS
-# from kcidb.orm import Type, SCHEMA, Pattern, Source
+"""KICDB argparse"""
+
+import kcidb.orm.argparse
 
 
 class ArgumentParser(kcidb.argparse.ArgumentParser):
@@ -25,8 +20,8 @@ class ArgumentParser(kcidb.argparse.ArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        kcidb.db.add_args(self, database=database)
-        kcidb.orm.add_args(self)
+        kcidb.db.argparse.add_args(self, database=database)
+        kcidb.orm.argparse.add_args(self)
 
 
 class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
@@ -47,5 +42,5 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        kcidb.db.add_args(self, database=database)
-        kcidb.orm.add_args(self)
+        kcidb.db.argparse.add_args(self, database=database)
+        kcidb.orm.argparse.add_args(self)

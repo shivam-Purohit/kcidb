@@ -1,21 +1,8 @@
+"""KICDB argparse"""
 
 import math
-# import datetime
-# import json
-# import logging
-# import threading
-# import sys
 import argparse
-# import email
-# import email.message
-# import email.policy
-# from abc import ABC, abstractmethod
-# from google.cloud import pubsub
-# from google.api_core.exceptions import DeadlineExceeded
-# import kcidb.io as io
-# import kcidb.orm
-import kcidb
-# from kcidb.misc import LIGHT_ASSERTS
+import kcidb.argparse
 
 
 def add_args(parser):

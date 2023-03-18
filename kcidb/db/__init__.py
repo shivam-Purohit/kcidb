@@ -7,9 +7,9 @@ import kcidb.io as io
 import kcidb.orm
 import kcidb.misc
 from kcidb.misc import LIGHT_ASSERTS
-from .argparse import QueryArgumentParser
 from kcidb.db import abstract, schematic, mux, argparse, \
-    bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
+     bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
+from .argparse import QueryArgumentParser
 
 # Module's logger
 LOGGER = logging.getLogger(__name__)
@@ -409,7 +409,8 @@ def load_main():
     sys.excepthook = kcidb.misc.log_and_print_excepthook
     description = \
         'kcidb-db-load - Load reports into Kernel CI report database'
-    parser = argparse.ArgumentParser(DRIVER_TYPES, description=description)
+    parser = argparse.ArgumentParser(driver_types=DRIVER_TYPES,
+                                     description=description)
     args = parser.parse_args()
     client = Client(args.database)
     if not client.is_initialized():

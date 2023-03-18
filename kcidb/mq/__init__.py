@@ -16,9 +16,9 @@ import kcidb.io as io
 import kcidb.orm
 from kcidb.argparse import output_add_args
 from kcidb.orm.argparse import PatternHelpAction
-from .argparse import SubscriberArgumentParser, PublisherArgumentParser
-from kcidb import misc
 from kcidb.misc import LIGHT_ASSERTS
+from kcidb import misc
+from .argparse import SubscriberArgumentParser, PublisherArgumentParser
 
 
 # Module's logger
@@ -606,8 +606,8 @@ def io_publisher_main():
     description = \
         'kcidb-mq-io-publisher - ' \
         'Kernel CI I/O data publisher management tool'
-    parser = argparse.PublisherArgumentParser("I/O data",  # noqa: F821
-                                              description=description)
+    parser = PublisherArgumentParser("I/O data",
+                                     description=description)
     args = parser.parse_args()
     publisher = IOPublisher(args.project, args.topic)
     if args.command == "init":

@@ -6,10 +6,11 @@ import sys
 from abc import ABC, abstractmethod
 from functools import reduce
 from cached_property import cached_property
-import kcidb.db
-from kcidb.misc import LIGHT_ASSERTS
 from kcidb.orm import Type, SCHEMA, Pattern, Source
-import argparse
+from kcidb.misc import LIGHT_ASSERTS
+import kcidb.misc
+import kcidb.orm
+from . import argparse
 
 
 class Object:

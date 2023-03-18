@@ -1,14 +1,8 @@
+"""KICDB argparse"""
+
 import argparse
 import kcidb.misc
 import kcidb.argparse
-from kcidb.db import abstract, schematic, mux, \
-    bigquery, postgresql, sqlite, json, null, misc  # noqa: F401
-# import kcidb.orm
-# import sys
-# import logging
-# import datetime
-# import kcidb.io as io
-# from kcidb.misc import LIGHT_ASSERTS
 
 
 class DBHelpAction(argparse.Action):
@@ -49,7 +43,7 @@ class DBHelpAction(argparse.Action):
               "\n"
               "Available drivers and format of their parameter strings "
               "follow.\n")
-        for name, driver in parser.DRIVER_TYPES.items():
+        for name, driver in parser.driver_types.items():
             print(f"\n{name!r} driver\n" +
                   "-" * (len(name) + 9) + "\n" +
                   driver.get_doc())
@@ -96,9 +90,7 @@ class ArgumentParser(kcidb.argparse.ArgumentParser):
                         make database specification required.
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
-        self.DRIVER_TYPES = driver_types
-        print("args:", args)
-        print("kwargs:", kwargs)
+        self.driver_types = driver_types
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
 

@@ -3,7 +3,7 @@
 import sys
 import yaml
 import requests
-import kcidb
+import kcidb.argparse
 from kcidb import misc
 
 from kcidb.tests import schema

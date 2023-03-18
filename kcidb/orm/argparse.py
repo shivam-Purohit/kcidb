@@ -1,15 +1,7 @@
-# import re
-# import textwrap
-# import logging
-import argparse
-# from . import Pattern
-# import jsonschema
-# import kcidb.io as io
-import kcidb.misc
-import kcidb
-# from kcidb.misc import LIGHT_ASSERTS
+"""KICDB argparse"""
 
-# We'll get to it, pylint: disable=too-many-lines
+import argparse
+import kcidb.misc
 
 
 class PatternHelpAction(argparse.Action):

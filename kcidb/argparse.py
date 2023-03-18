@@ -1,18 +1,9 @@
+"""Kernel CI argparse"""
+
 import math
 import re
 import argparse
 import logging
-# from textwrap import indent
-# import os
-# import atexit
-# import tempfile
-# import sys
-# import traceback
-# import itertools
-# import json
-# import dateutil.parser
-# from google.cloud import secretmanager
-# import jq
 
 try:  # Python 3.9
     from importlib import metadata
