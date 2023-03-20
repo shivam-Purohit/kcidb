@@ -18,6 +18,7 @@ from kcidb.db.schematic import \
     Connection as AbstractConnection
 from kcidb.db.misc import NotFound
 from kcidb.db.bigquery.schema import validate_json_obj_list
+from google.cloud.bigquery import DatasetReference
 
 # We'll manage for now, pylint: disable=too-many-lines
 
@@ -70,7 +71,7 @@ class Connection(AbstractConnection):
             project_id = None
             dataset_name = params
         self.client = bigquery.Client(project=project_id)
-        self.dataset_ref = self.client.dataset(dataset_name)
+        self.dataset_ref = DatasetReference(self.client.project, dataset_name)
         try:
             self.client.get_dataset(self.dataset_ref)
         except GoogleNotFound as exc:
