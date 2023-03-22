@@ -60,12 +60,15 @@ dashboard](https://kcidb.kernelci.org/).
 2\. Install KCIDB
 -----------------
 
-Pick a KCIDB [release][releases]. Latest would normally be best.
 
-Let's say you picked v9. Run this:
+KCIDB employs continuous integration and delivery, and aims to keep
+the code working at all times.
+
+Please install the latest version from GitHub:
+
 
 ```bash
-pip3 install --user 'git+https://git@github.com/kernelci/kcidb.git@v9'
+pip3 install --user 'git+https://git@github.com/kernelci/kcidb.git'
 ```
 
 Then make sure your PATH includes the `~/.local/bin` directory, e.g. with:
@@ -85,7 +88,7 @@ $ kcidb-query -d bigquery:playground_kcidb_01
 and submit an empty report:
 
 ```console
-$ echo '{"version":{"major":4,"minor":0}}' |
+$ echo '{"version":{"major":4,"minor":1}}' |
         kcidb-submit -p kernelci-production -t playground_kcidb_new
 ```
 
@@ -95,11 +98,10 @@ exit status.
 3\. Generate some report data
 -----------------------------
 
-KCIDB accepts data in JSON, described by a versioned schema. The
-`kcidb-schema` tool will output the current schema version. However, all tools
-will accept data complying with older schema versions, as a rule. Any
-exceptions to that will be mentioned in KCIDB release notes. Pipe your data
-into `kcidb-validate` tool to check if it will be accepted.
+`kcidb-schema` tool will output the current schema version.
+
+However, all tools will accept data complying with older schema versions. Pipe
+your data into `kcidb-validate` tool to check if it will be accepted.
 
 Here's a minimal report, containing no data:
 
@@ -107,7 +109,7 @@ Here's a minimal report, containing no data:
 {
     "version": {
         "major": 4,
-        "minor": 0
+        "minor": 1
     }
 }
 ```
@@ -153,9 +155,24 @@ checkout with one build and one test:
             "origin": "submitter"
         }
     ],
+    "issue": [
+        {
+            "id": "submitter:124853810",
+            "version": 1,
+            "origin": "submitter"
+        }
+    ],
+    "incident": [
+        {
+            "id": "submitter:1084645810",
+            "issue_id": "submitter:956769",
+            "origin": "submitter",
+            "issue_version": 0
+        }
+    ],
     "version": {
         "major": 4,
-        "minor": 0
+        "minor": 1
     }
 }
 ```
@@ -406,7 +423,6 @@ let you, kernel developers, and KCIDB developers see how it works, what
 changes/additions might be needed to both your data and KCIDB, and improve our
 reporting faster!
 
-[releases]: https://github.com/kernelci/kcidb/releases
 [datetime_format]: https://tools.ietf.org/html/rfc3339#section-5.6
 [tests]: https://github.com/kernelci/kcidb/blob/master/tests.yaml
 [dashboard]: https://kcidb.kernelci.org/
