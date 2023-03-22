@@ -1,6 +1,7 @@
-"""KICDB argparse"""
+"""KCIDB argument parsing"""
 
 import kcidb.orm.argparse
+import kcidb.db.argparse
 
 
 class ArgumentParser(kcidb.argparse.ArgumentParser):

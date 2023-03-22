@@ -12,8 +12,8 @@ import datetime
 import email
 import email.policy
 from google.cloud import firestore
-from kcidb.argparse import ArgumentParser
-from kcidb.misc import iso_timestamp, log_and_print_excepthook
+from kcidb.misc import log_and_print_excepthook
+from kcidb.argparse import iso_timestamp, ArgumentParser
 from kcidb.monitor.misc import is_valid_firestore_id
 from kcidb.monitor.output import Notification
 

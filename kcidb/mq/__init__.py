@@ -14,12 +14,11 @@ from google.cloud import pubsub
 from google.api_core.exceptions import DeadlineExceeded
 import kcidb.io as io
 import kcidb.orm
-from kcidb.argparse import output_add_args
-from kcidb.orm.argparse import PatternHelpAction
+import kcidb.argparse
+import kcidb.orm.argparse
 from kcidb.misc import LIGHT_ASSERTS
 from kcidb import misc
-from .argparse import SubscriberArgumentParser, PublisherArgumentParser
-
+from kcidb.mq import argparse
 
 # Module's logger
 LOGGER = logging.getLogger(__name__)
@@ -606,8 +605,8 @@ def io_publisher_main():
     description = \
         'kcidb-mq-io-publisher - ' \
         'Kernel CI I/O data publisher management tool'
-    parser = PublisherArgumentParser("I/O data",
-                                     description=description)
+    parser = argparse.PublisherArgumentParser("I/O data",
+                                              description=description)
     args = parser.parse_args()
     publisher = IOPublisher(args.project, args.topic)
     if args.command == "init":
@@ -631,9 +630,9 @@ def io_subscriber_main():
     description = \
         'kcidb-mq-io-subscriber - ' \
         'Kernel CI I/O data subscriber management tool'
-    parser = SubscriberArgumentParser("I/O data",
-                                      description=description)
-    output_add_args(parser.subparsers["pull"])
+    parser = argparse.SubscriberArgumentParser("I/O data",
+                                               description=description)
+    kcidb.argparse.output_add_args(parser.subparsers["pull"])
     args = parser.parse_args()
     subscriber = IOSubscriber(args.project, args.topic, args.subscription)
     if args.command == "init":
@@ -654,11 +653,11 @@ def pattern_publisher_main():
     description = \
         'kcidb-mq-pattern-publisher - ' \
         'Kernel CI ORM pattern publisher management tool'
-    parser = PublisherArgumentParser("ORM patterns",
-                                     description=description)
+    parser = argparse.PublisherArgumentParser("ORM patterns",
+                                              description=description)
     parser.subparsers["publish"].add_argument(
         '--pattern-help',
-        action=PatternHelpAction,
+        action=kcidb.orm.argparse.PatternHelpAction,
         help='Print pattern string documentation and exit.'
     )
     args = parser.parse_args()
@@ -686,8 +685,8 @@ def pattern_subscriber_main():
     description = \
         'kcidb-mq-pattern-subscriber - ' \
         'Kernel CI ORM pattern subscriber management tool'
-    parser = SubscriberArgumentParser("ORM patterns",
-                                      description=description)
+    parser = argparse.SubscriberArgumentParser("ORM patterns",
+                                               description=description)
     args = parser.parse_args()
     subscriber = ORMPatternSubscriber(args.project, args.topic,
                                       args.subscription)
@@ -711,8 +710,8 @@ def email_publisher_main():
     description = \
         'kcidb-mq-email-publisher - ' \
         'Kernel CI email queue publisher management tool'
-    parser = PublisherArgumentParser("email",
-                                     description=description)
+    parser = argparse.PublisherArgumentParser("email",
+                                              description=description)
     args = parser.parse_args()
     publisher = EmailPublisher(args.project, args.topic)
     if args.command == "init":
@@ -730,8 +729,8 @@ def email_subscriber_main():
     description = \
         'kcidb-mq-email-subscriber - ' \
         'Kernel CI email queue subscriber management tool'
-    parser = SubscriberArgumentParser("email",
-                                      description=description)
+    parser = argparse.SubscriberArgumentParser("email",
+                                               description=description)
     args = parser.parse_args()
     subscriber = EmailSubscriber(args.project, args.topic, args.subscription)
     if args.command == "init":

@@ -1,4 +1,4 @@
-"""KICDB argparse"""
+"""KCIDB argument parsing"""
 
 import argparse
 import kcidb.misc

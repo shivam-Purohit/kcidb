@@ -1,4 +1,4 @@
-"""KICDB argparse"""
+"""KCIDB argument parsing"""
 
 import math
 import argparse

@@ -1,4 +1,4 @@
-"""KICDB argparse"""
+"""KCIDB argument parsing"""
 
 import argparse
 import kcidb.misc
@@ -84,12 +84,16 @@ class ArgumentParser(kcidb.argparse.ArgumentParser):
         Initialize the parser, adding common database arguments.
 
         Args:
+            driver_types: A dictionary of known driver names and types
             args:       Positional arguments to initialize ArgumentParser
                         with.
             database:   The default database specification to use, or None to
                         make database specification required.
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
+        assert isinstance(driver_types, dict)
+        assert all(isinstance(key, str) for key in driver_types.keys())
+        assert all(isinstance(value, type) for value in driver_types.values())
         self.driver_types = driver_types
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
@@ -101,17 +105,22 @@ class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
     with common database arguments added.
     """
 
-    def __init__(self, *args, database=None, **kwargs):
+    def __init__(self, driver_types, *args, database=None, **kwargs):
         """
         Initialize the parser, adding JSON output arguments.
 
         Args:
+            driver_types: A dictionary of known driver names and types
             args:       Positional arguments to initialize ArgumentParser
                         with.
             database:   The default database specification to use, or None to
                         make database specification required.
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
+        assert isinstance(driver_types, dict)
+        assert all(isinstance(key, str) for key in driver_types.keys())
+        assert all(isinstance(value, type) for value in driver_types.values())
+        self.driver_types = driver_types
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
 
@@ -122,17 +131,22 @@ class SplitOutputArgumentParser(kcidb.argparse.SplitOutputArgumentParser):
     with common database arguments added.
     """
 
-    def __init__(self, *args, database=None, **kwargs):
+    def __init__(self, driver_types, *args, database=None, **kwargs):
         """
         Initialize the parser, adding split-report output arguments.
 
         Args:
+            driver_types: A dictionary of known driver names and types
             args:       Positional arguments to initialize ArgumentParser
                         with.
             database:   The default database specification to use, or None to
                         make database specification required.
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
+        assert isinstance(driver_types, dict)
+        assert all(isinstance(key, str) for key in driver_types.keys())
+        assert all(isinstance(value, type) for value in driver_types.values())
+        self.driver_types = driver_types
         super().__init__(*args, **kwargs)
         add_args(self, database=database)
 
@@ -143,17 +157,22 @@ class QueryArgumentParser(SplitOutputArgumentParser):
     Command-line argument parser with common database query arguments added.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, driver_types, *args, **kwargs):
         """
         Initialize the parser, adding common database query arguments.
 
         Args:
+            driver_types: A dictionary of known driver names and types
             args:   Positional arguments to initialize the parent
                     SplitOutputArgumentParser with.
             kwargs: Keyword arguments to initialize the parent
                     SplitOutputArgumentParser with.
         """
-        super().__init__(*args, **kwargs)
+        assert isinstance(driver_types, dict)
+        assert all(isinstance(key, str) for key in driver_types.keys())
+        assert all(isinstance(value, type) for value in driver_types.values())
+        self.driver_types = driver_types
+        super().__init__(driver_types, *args, **kwargs)
 
         self.add_argument(
             '-c', '--checkout-id',

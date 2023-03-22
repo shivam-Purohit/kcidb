@@ -7,7 +7,7 @@ import textwrap
 import html
 import logging
 from email.message import EmailMessage
-from kcidb.oo import Object
+import kcidb.oo
 from kcidb.monitor.misc import is_valid_firestore_id
 from kcidb.templates import ENV as TEMPLATE_ENV
 
@@ -152,7 +152,7 @@ class Notification:
             message:        Notification message. An instance of
                             NotificationMessage.
         """
-        assert isinstance(obj, Object)
+        assert isinstance(obj, kcidb.oo.Object)
         assert isinstance(subscription, str)
         assert SUBSCRIPTION_RE.fullmatch(subscription)
         assert len(subscription.encode()) <= 64

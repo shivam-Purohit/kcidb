@@ -4,6 +4,7 @@ import math
 import re
 import argparse
 import logging
+import dateutil.parser
 
 try:  # Python 3.9
     from importlib import metadata
@@ -137,6 +138,32 @@ def non_negative_int_or_inf(string):
     except (ValueError, argparse.ArgumentTypeError) as exc:
         raise argparse.ArgumentTypeError(
             f'{repr(string)} is not zero, a positive integer, or infinity'
+        ) from exc
+    return value
+
+
+def iso_timestamp(string):
+    """
+    Parse an ISO-8601 timestamp out of a string, assuming local timezone, if
+    not specified. Matches the argparse type function interface.
+
+    Args:
+        string: The string to parse.
+
+    Returns:
+        The timestamp parsed out of the string.
+
+    Raises:
+        argparse.ArgumentTypeError: the string wasn't representing an ISO-8601
+        timestamp.
+    """
+    try:
+        value = dateutil.parser.isoparse(string)
+        if value.tzinfo is None:
+            value = value.astimezone()
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(
+            f'{repr(string)} is not an ISO-8601 timestamp'
         ) from exc
     return value
 

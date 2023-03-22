@@ -19,145 +19,6 @@ from kcidb.misc import LIGHT_ASSERTS
 # Module's logger
 LOGGER = logging.getLogger(__name__)
 
-# Latest I/O schema shared definitions
-_DEFS = io.SCHEMA.json['$defs']
-# Checkout properties from the current I/O schema
-_CHECKOUT = _DEFS['checkout']['properties']
-# Build properties from the current I/O schema
-_BUILD = _DEFS['build']['properties']
-# Test properties from the current I/O schema
-_TEST = _DEFS['test']['properties']
-# Issue properties from the current I/O schema
-_ISSUE = _DEFS['issue']['properties']
-# Issue culprit properties from the current I/O schema
-_ISSUE_CULPRIT = _ISSUE['culprit']['properties']
-# Incident properties from the current I/O schema
-_INCIDENT = _DEFS['incident']['properties']
-# Test environment properties from the current I/O schema
-_TEST_ENVIRONMENT = _TEST['environment']['properties']
-
-
-# A (verbose) regular expression pattern matching an unquoted ID field
-_PATTERN_STRING_ID_FIELD_UNQUOTED_PATTERN = """
-    [\x30-\x39\x41-\x5a\x61-\x7a_:/.?%+-]+
-"""
-
-_PATTERN_STRING_ID_FIELD_UNQUOTED_RE = re.compile(
-    _PATTERN_STRING_ID_FIELD_UNQUOTED_PATTERN,
-    re.ASCII | re.VERBOSE
-)
-
-# A (verbose) regular expression pattern matching characters which can
-# appear unescaped in a quoted ID field
-_PATTERN_STRING_ID_FIELD_QUOTED_UNESC_CHAR_PATTERN = """
-    # Anything printable except doublequote/backslash
-    [\x5d-\x7e\x20-\x21\x23-\x5b]
-"""
-
-# A (verbose) regular expression pattern matching characters which must be
-# backslash-escaped when appearing in a quoted ID field
-_PATTERN_STRING_ID_FIELD_QUOTED_ESC_CHAR_PATTERN = """
-    # Doublequote/backslash
-    ["\\\\]
-"""
-
-# A (verbose) regular expression pattern matching a quoted ID field
-_PATTERN_STRING_ID_FIELD_QUOTED_PATTERN = f"""
-    "
-        (?:
-            {_PATTERN_STRING_ID_FIELD_QUOTED_UNESC_CHAR_PATTERN} |
-            \\\\ {_PATTERN_STRING_ID_FIELD_QUOTED_ESC_CHAR_PATTERN}
-        )*
-    "
-"""
-
-# A (verbose) regular expression pattern matching an ID field
-_PATTERN_STRING_ID_FIELD_PATTERN = f"""
-    (?:
-        {_PATTERN_STRING_ID_FIELD_UNQUOTED_PATTERN} |
-        {_PATTERN_STRING_ID_FIELD_QUOTED_PATTERN}
-    )
-"""
-
-# A (verbose) regular expression pattern matching an ID (ID field list)
-_PATTERN_STRING_ID_PATTERN = f"""
-    {_PATTERN_STRING_ID_FIELD_PATTERN}
-    (?:
-        \\s*
-        ,
-        \\s*
-        {_PATTERN_STRING_ID_FIELD_PATTERN}
-    )*
-"""
-
-# A (verbose) regular expression pattern matching an ID list
-_PATTERN_STRING_ID_LIST_PATTERN = f"""
-    {_PATTERN_STRING_ID_PATTERN}
-    (?:
-        \\s*
-        ;
-        \\s*
-        {_PATTERN_STRING_ID_PATTERN}
-    )*
-"""
-
-# A (verbose) regular expression pattern matching an ID list spec
-_PATTERN_STRING_SPEC_ID_LIST_PATTERN = f"""
-    \\[
-        \\s*
-        (?:
-            {_PATTERN_STRING_ID_LIST_PATTERN}
-            \\s*
-        )?
-    \\]
-"""
-
-# A (verbose) regular expression pattern matching a spec
-_PATTERN_STRING_SPEC_PATTERN = f"""
-    (?:
-        # ID list placeholder
-        % |
-        # Inline ID list
-        {_PATTERN_STRING_SPEC_ID_LIST_PATTERN}
-    )
-"""
-
-# A (verbose) regular expression pattern matching a "pattern" part of the
-# pattern string. Matching group names correspond to component ABNF rules.
-_PATTERN_STRING_PATTERN = f"""
-    \\s*
-    # Relation
-    (?P<relation>
-        [<>]
-    )
-    \\s*
-    # Type
-    (?P<type>
-        # Type name
-        [a-z0-9_]+ |
-        # Type branch wildcard
-        [*]
-    )
-    \\s*
-    # ID list specification
-    (?P<spec>
-        {_PATTERN_STRING_SPEC_PATTERN}
-    )?
-    \\s*
-    # Matching scope
-    (?P<match>
-        [#$]
-    )?
-    \\s*
-"""
-
-# A regular expression matching a "pattern" part of the pattern string
-# Matching group names correspond to component ABNF rules.
-_PATTERN_STRING_RE = re.compile(
-    _PATTERN_STRING_PATTERN,
-    re.ASCII | re.VERBOSE
-)
-
 
 class Relation:
     """A parent/child relation between object types"""
@@ -466,6 +327,23 @@ class Schema:
         )
 
 
+# Latest I/O schema shared definitions
+_DEFS = io.SCHEMA.json['$defs']
+# Checkout properties from the current I/O schema
+_CHECKOUT = _DEFS['checkout']['properties']
+# Build properties from the current I/O schema
+_BUILD = _DEFS['build']['properties']
+# Test properties from the current I/O schema
+_TEST = _DEFS['test']['properties']
+# Issue properties from the current I/O schema
+_ISSUE = _DEFS['issue']['properties']
+# Issue culprit properties from the current I/O schema
+_ISSUE_CULPRIT = _ISSUE['culprit']['properties']
+# Incident properties from the current I/O schema
+_INCIDENT = _DEFS['incident']['properties']
+# Test environment properties from the current I/O schema
+_TEST_ENVIRONMENT = _TEST['environment']['properties']
+
 # The schema of the raw object-oriented data
 SCHEMA = Schema(
     _DEFS,
@@ -608,6 +486,136 @@ SCHEMA = Schema(
             id_fields=("id",),
         ),
     )
+)
+
+
+assert all(k.endswith("s") for k in io.SCHEMA.graph if k), \
+    "Not all I/O object list names end with 's'"
+
+assert set(SCHEMA.types) >= \
+    set(k[:-1] for k in io.SCHEMA.graph if k), \
+    "OO types are not a superset of I/O types"
+
+
+# A (verbose) regular expression pattern matching an unquoted ID field
+_PATTERN_STRING_ID_FIELD_UNQUOTED_PATTERN = """
+    [\x30-\x39\x41-\x5a\x61-\x7a_:/.?%+-]+
+"""
+
+_PATTERN_STRING_ID_FIELD_UNQUOTED_RE = re.compile(
+    _PATTERN_STRING_ID_FIELD_UNQUOTED_PATTERN,
+    re.ASCII | re.VERBOSE
+)
+
+# A (verbose) regular expression pattern matching characters which can
+# appear unescaped in a quoted ID field
+_PATTERN_STRING_ID_FIELD_QUOTED_UNESC_CHAR_PATTERN = """
+    # Anything printable except doublequote/backslash
+    [\x5d-\x7e\x20-\x21\x23-\x5b]
+"""
+
+# A (verbose) regular expression pattern matching characters which must be
+# backslash-escaped when appearing in a quoted ID field
+_PATTERN_STRING_ID_FIELD_QUOTED_ESC_CHAR_PATTERN = """
+    # Doublequote/backslash
+    ["\\\\]
+"""
+
+# A (verbose) regular expression pattern matching a quoted ID field
+_PATTERN_STRING_ID_FIELD_QUOTED_PATTERN = f"""
+    "
+        (?:
+            {_PATTERN_STRING_ID_FIELD_QUOTED_UNESC_CHAR_PATTERN} |
+            \\\\ {_PATTERN_STRING_ID_FIELD_QUOTED_ESC_CHAR_PATTERN}
+        )*
+    "
+"""
+
+# A (verbose) regular expression pattern matching an ID field
+_PATTERN_STRING_ID_FIELD_PATTERN = f"""
+    (?:
+        {_PATTERN_STRING_ID_FIELD_UNQUOTED_PATTERN} |
+        {_PATTERN_STRING_ID_FIELD_QUOTED_PATTERN}
+    )
+"""
+
+# A (verbose) regular expression pattern matching an ID (ID field list)
+_PATTERN_STRING_ID_PATTERN = f"""
+    {_PATTERN_STRING_ID_FIELD_PATTERN}
+    (?:
+        \\s*
+        ,
+        \\s*
+        {_PATTERN_STRING_ID_FIELD_PATTERN}
+    )*
+"""
+
+# A (verbose) regular expression pattern matching an ID list
+_PATTERN_STRING_ID_LIST_PATTERN = f"""
+    {_PATTERN_STRING_ID_PATTERN}
+    (?:
+        \\s*
+        ;
+        \\s*
+        {_PATTERN_STRING_ID_PATTERN}
+    )*
+"""
+
+# A (verbose) regular expression pattern matching an ID list spec
+_PATTERN_STRING_SPEC_ID_LIST_PATTERN = f"""
+    \\[
+        \\s*
+        (?:
+            {_PATTERN_STRING_ID_LIST_PATTERN}
+            \\s*
+        )?
+    \\]
+"""
+
+# A (verbose) regular expression pattern matching a spec
+_PATTERN_STRING_SPEC_PATTERN = f"""
+    (?:
+        # ID list placeholder
+        % |
+        # Inline ID list
+        {_PATTERN_STRING_SPEC_ID_LIST_PATTERN}
+    )
+"""
+
+# A (verbose) regular expression pattern matching a "pattern" part of the
+# pattern string. Matching group names correspond to component ABNF rules.
+_PATTERN_STRING_PATTERN = f"""
+    \\s*
+    # Relation
+    (?P<relation>
+        [<>]
+    )
+    \\s*
+    # Type
+    (?P<type>
+        # Type name
+        [a-z0-9_]+ |
+        # Type branch wildcard
+        [*]
+    )
+    \\s*
+    # ID list specification
+    (?P<spec>
+        {_PATTERN_STRING_SPEC_PATTERN}
+    )?
+    \\s*
+    # Matching scope
+    (?P<match>
+        [#$]
+    )?
+    \\s*
+"""
+
+# A regular expression matching a "pattern" part of the pattern string
+# Matching group names correspond to component ABNF rules.
+_PATTERN_STRING_RE = re.compile(
+    _PATTERN_STRING_PATTERN,
+    re.ASCII | re.VERBOSE
 )
 
 
@@ -1277,14 +1285,6 @@ class Pattern:
                     })
                 )
         return pattern_set
-
-
-assert all(k.endswith("s") for k in io.SCHEMA.graph if k), \
-    "Not all I/O object list names end with 's'"
-
-assert set(SCHEMA.types) >= \
-    set(k[:-1] for k in io.SCHEMA.graph if k), \
-    "OO types are not a superset of I/O types"
 
 
 class Source(ABC):

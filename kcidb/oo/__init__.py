@@ -10,7 +10,7 @@ from kcidb.orm import Type, SCHEMA, Pattern, Source
 from kcidb.misc import LIGHT_ASSERTS
 import kcidb.misc
 import kcidb.orm
-from . import argparse
+from kcidb.oo import argparse
 
 
 class Object:

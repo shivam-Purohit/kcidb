@@ -4,11 +4,8 @@ import sys
 import email
 import logging
 from kcidb.misc import LIGHT_ASSERTS
-from kcidb.db import DRIVER_TYPES
-
 # Silence flake8 "imported but unused" warning
-from kcidb import io, db, orm, oo, monitor, tests, unittest, misc, argparse # noqa
-from kcidb.mq import IOPublisher
+from kcidb import io, db, orm, mq, oo, monitor, tests, unittest, misc, argparse # noqa
 
 
 # Module's logger
@@ -59,7 +56,7 @@ class Client:
             if not self.db_client.is_initialized():
                 raise DatabaseNotInitialized()
         self.mq_publisher = \
-            IOPublisher(project_id, topic_name) \
+            mq.IOPublisher(project_id, topic_name) \
             if project_id and topic_name else None
 
     def submit(self, data):
@@ -217,7 +214,8 @@ def query_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = \
         "kcidb-query - Query Kernel CI reports"
-    parser = db.argparse.QueryArgumentParser(description=description)
+    parser = db.argparse.QueryArgumentParser(driver_types=db.DRIVER_TYPES,
+                                             description=description)
     args = parser.parse_args()
     client = Client(database=args.database)
     query_iter = client.query_iter(
@@ -333,7 +331,7 @@ def ingest_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-ingest - Load data into a (new) database and ' \
         'generate notifications for new and modified objects'
-    parser = db.argparse.ArgumentParser(driver_types=DRIVER_TYPES,
+    parser = db.argparse.ArgumentParser(driver_types=db.DRIVER_TYPES,
                                         database="sqlite::memory:",
                                         description=description)
     args = parser.parse_args()

@@ -12,15 +12,9 @@ import argparse
 import logging
 import json
 from textwrap import indent
-
-import dateutil.parser
-# try:  # Python 3.9
-#     from importlib import metadata
-# except ImportError:  # Python 3.6
-#     import importlib_metadata as metadata
 from google.cloud import secretmanager
 import jq
-# import kcidb.io as io
+
 
 # Module's logger
 LOGGER = logging.getLogger(__name__)
@@ -87,32 +81,6 @@ def log_and_print_excepthook(type, value, tb):
     lines = traceback.format_exception(type, value, tb)
     LOGGER.debug("%s", "".join(lines).rstrip())
     print(format_exception_stack(value), file=sys.stderr)
-
-
-def iso_timestamp(string):
-    """
-    Parse an ISO-8601 timestamp out of a string, assuming local timezone, if
-    not specified. Matches the argparse type function interface.
-
-    Args:
-        string: The string to parse.
-
-    Returns:
-        The timestamp parsed out of the string.
-
-    Raises:
-        argparse.ArgumentTypeError: the string wasn't representing an ISO-8601
-        timestamp.
-    """
-    try:
-        value = dateutil.parser.isoparse(string)
-        if value.tzinfo is None:
-            value = value.astimezone()
-    except ValueError as exc:
-        raise argparse.ArgumentTypeError(
-            f'{repr(string)} is not an ISO-8601 timestamp'
-        ) from exc
-    return value
 
 
 def version(string):
