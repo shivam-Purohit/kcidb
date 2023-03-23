@@ -94,6 +94,30 @@ Select the account key for use with Google Cloud API (which kcidb uses):
 Clone kcidb repository, checkout the revision you want to deploy, and install
 kcidb as described in [README.md](README.md).
 
+### Additional Dependencies
+
+while deploying you may also need the to install psql. psql is a command-line tool for interacting with the PostgreSQL database. It is used to manage and manipulate data stored in a PostgreSQL database, as well as to administer and configure the database itself. 
+
+First, you should install prerequisite software packages that will be used to download and install software certificates for a secure SSL connection.
+    
+    sudo apt install wget ca-certificates
+
+Then, get the certificate, add it to apt-key management utility and create a new configuration file with an official PostgreSQL repository address inside.
+ 
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+
+It is always a good idea to download information about all packages available for installation from your configured sources before the actual installation.
+
+    sudo apt update
+
+Now is the time to do the actual PostgreSQL installation.
+
+    apt install postgresql postgresql-contrib
+
+You can refer to the documentation here https://www.postgresql.org/docs/current/installation.html
+
 ### Deploying
 
 Use the `cloud` tool located in the root of kcidb repository to deploy the base
