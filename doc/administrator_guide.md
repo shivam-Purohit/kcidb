@@ -96,25 +96,19 @@ kcidb as described in [README.md](README.md).
 
 ### Additional Dependencies
 
-while deploying you may also need the to install psql. psql is a command-line tool for interacting with the PostgreSQL database. It is used to manage and manipulate data stored in a PostgreSQL database, as well as to administer and configure the database itself. 
+While deploying you may also need the to install psql. psql is a command-line tool for interacting with the PostgreSQL database. It is used to manage and manipulate data stored in a PostgreSQL database, as well as to administer and configure the database itself. 
 
-First, you should install prerequisite software packages that will be used to download and install software certificates for a secure SSL connection.
+Update the package lists:
     
-    sudo apt install wget ca-certificates
+    sudo apt-get update
 
-Then, get the certificate, add it to apt-key management utility and create a new configuration file with an official PostgreSQL repository address inside.
- 
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+Install PostgreSQL: 
 
-    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+    sudo apt-get install postgresql
 
-It is always a good idea to download information about all packages available for installation from your configured sources before the actual installation.
-
-    sudo apt update
-
-Now is the time to do the actual PostgreSQL installation.
-
-    apt install postgresql postgresql-contrib
+This will install PostgreSQL and its dependencies. After the installation is complete, you can check the status of the PostgreSQL service
+   
+   systemctl status postgresql
 
 You can refer to the documentation here https://www.postgresql.org/docs/current/installation.html
 
