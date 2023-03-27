@@ -96,15 +96,11 @@ kcidb as described in [README.md](README.md).
 
 ### Additional Dependencies
 
-While deploying you may also need to install psql. psql is a command-line tool for interacting with the PostgreSQL database. It is used to manage and manipulate data stored in a PostgreSQL database, as well as to administer and configure the database itself. 
+While deploying you may also need to install psql. psql is a command-line tool for
+interacting with the PostgreSQL database. It is used to manage and manipulate data
+stored in a PostgreSQL database, as well as to administer and configure the database itself.
 
-Update the package lists:
-    
-    sudo apt-get update
-
-Install the postgresql-client-common package: 
-
-    apt-get install postgresql-client-common
+For Debian-based distros like Ubuntu:
 
 Install the postgresql-client package, which includes the psql command:
    
@@ -114,7 +110,14 @@ Verfiy the psql installation:
    
     psql --version
 
-Once the installation is complete, you can start using psql to interact with PostgreSQL databases. You can refer to the documentation here https://www.postgresql.org/docs/current/installation.html
+For Fedora-based distros like Nobara:
+
+Install the postgresql-client package, which includes the psql command:
+
+    sudo dnf install postgresql
+
+Once the installation is complete. You can refer to the documentation 
+here https://www.postgresql.org/docs/current/installation.html
 
 ### Deploying
 
