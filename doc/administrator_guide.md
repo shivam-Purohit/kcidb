@@ -110,6 +110,10 @@ Install the postgresql-client package, which includes the psql command:
    
     apt-get install postgresql-client
 
+Verfiy the psql installation: 
+   
+    psql --version
+
 Once the installation is complete, you can start using psql to interact with PostgreSQL databases.You can refer to the documentation here https://www.postgresql.org/docs/current/installation.html
 
 ### Deploying
