@@ -100,11 +100,11 @@ While deploying you may also need to install psql. psql is a command-line tool f
 interacting with the PostgreSQL database. It is used to manage and manipulate data
 stored in a PostgreSQL database, as well as to administer and configure the database itself.
 
-1) Debian-based distros like Ubuntu:
+For Debian-based distros like Ubuntu:
    
     apt-get install postgresql-client
 
-2) Fedora-based distros like Nobara:
+For Fedora-based distros like Nobara:
 
     sudo dnf install postgresql
 
