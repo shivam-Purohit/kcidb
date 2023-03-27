@@ -102,15 +102,15 @@ Update the package lists:
     
     sudo apt-get update
 
-Install PostgreSQL: 
+Install the postgresql-client-common package: 
 
-    sudo apt-get install postgresql
+    apt-get install postgresql-client-common
 
-This will install PostgreSQL and its dependencies. After the installation is complete, you can check the status of the PostgreSQL service
+Install the postgresql-client package, which includes the psql command:
    
-   systemctl status postgresql
+    apt-get install postgresql-client
 
-You can refer to the documentation here https://www.postgresql.org/docs/current/installation.html
+Once the installation is complete, you can start using psql to interact with PostgreSQL databases.You can refer to the documentation here https://www.postgresql.org/docs/current/installation.html
 
 ### Deploying
 
