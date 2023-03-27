@@ -96,7 +96,7 @@ kcidb as described in [README.md](README.md).
 
 ### Additional Dependencies
 
-While deploying you may also need to install psql. psql is a command-line tool for
+While deploying you may also need to install `psql`. It is a command-line tool for
 interacting with the PostgreSQL database. It is used to manage and manipulate data
 stored in a PostgreSQL database, as well as to administer and configure the database itself.
 
