@@ -106,7 +106,7 @@ Install the postgresql-client package, which includes the psql command:
    
     apt-get install postgresql-client
 
-Verfiy the psql installation: 
+Verify the psql installation: 
    
     psql --version
 
@@ -116,7 +116,7 @@ Install the postgresql-client package, which includes the psql command:
 
     sudo dnf install postgresql
 
-Verfiy the psql installation: 
+Verify the psql installation: 
    
     psql --version
 
