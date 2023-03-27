@@ -22,7 +22,7 @@ Then make sure your PATH includes the `~/.local/bin` directory, e.g. with:
 
     export PATH="$PATH":~/.local/bin
 
-### Commits
+### Pre-commit hooks
 
 GitHub pre-commit hooks are scripts that can be triggered automatically by Git when certain events occur, such as committing changes to a repository. They are typically used to enforce coding standards, perform automated tests, or perform other checks on code changes before they are committed.
 
