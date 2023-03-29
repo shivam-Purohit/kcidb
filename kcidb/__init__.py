@@ -3,9 +3,11 @@
 import sys
 import email
 import logging
+import kcidb.db.argparse
+import kcidb.oo.argparse
 from kcidb.misc import LIGHT_ASSERTS
 # Silence flake8 "imported but unused" warning
-from kcidb import io, db, mq, orm, oo, monitor, tests, unittest, misc # noqa
+from kcidb import io, db, mq, orm, oo, monitor, tests, unittest, misc, argparse # noqa
 
 
 # Module's logger
@@ -184,7 +186,7 @@ def submit_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = \
         'kcidb-submit - Submit Kernel CI reports, print submission IDs'
-    parser = misc.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
         '-p', '--project',
         help='ID of the Google Cloud project containing the message queue',
@@ -214,7 +216,7 @@ def query_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = \
         "kcidb-query - Query Kernel CI reports"
-    parser = db.QueryArgumentParser(description=description)
+    parser = kcidb.db.argparse.QueryArgumentParser(description=description)
     args = parser.parse_args()
     client = Client(database=args.database)
     query_iter = client.query_iter(
@@ -236,8 +238,8 @@ def schema_main():
     """Execute the kcidb-schema command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-schema - Output current or older I/O JSON schema'
-    parser = misc.OutputArgumentParser(description=description)
-    misc.argparse_schema_add_args(parser, "output")
+    parser = argparse.OutputArgumentParser(description=description)
+    argparse.schema_add_args(parser, "output")
     args = parser.parse_args()
     misc.json_dump(args.schema_version.json, sys.stdout, indent=args.indent,
                    seq=args.seq)
@@ -247,8 +249,8 @@ def validate_main():
     """Execute the kcidb-validate command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-validate - Validate I/O JSON data'
-    parser = misc.OutputArgumentParser(description=description)
-    misc.argparse_schema_add_args(parser, "validate against")
+    parser = argparse.OutputArgumentParser(description=description)
+    argparse.schema_add_args(parser, "validate against")
     args = parser.parse_args()
     misc.json_dump_stream(
         (
@@ -263,8 +265,8 @@ def upgrade_main():
     """Execute the kcidb-upgrade command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-upgrade - Upgrade I/O JSON data to current schema'
-    parser = misc.OutputArgumentParser(description=description)
-    misc.argparse_schema_add_args(parser, "upgrade")
+    parser = argparse.OutputArgumentParser(description=description)
+    argparse.schema_add_args(parser, "upgrade")
     args = parser.parse_args()
     misc.json_dump_stream(
         (
@@ -279,7 +281,7 @@ def count_main():
     """Execute the kcidb-count command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-count - Count number of objects in I/O JSON data'
-    parser = misc.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(description=description)
     parser.parse_args()
 
     for data in misc.json_load_stream_fd(sys.stdin.fileno()):
@@ -291,7 +293,7 @@ def merge_main():
     """Execute the kcidb-merge command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-merge - Upgrade and merge I/O data sets'
-    parser = misc.OutputArgumentParser(description=description)
+    parser = argparse.OutputArgumentParser(description=description)
     args = parser.parse_args()
 
     sources = [
@@ -311,7 +313,8 @@ def notify_main():
     """Execute the kcidb-notify command-line tool"""
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-notify - Generate notifications for specified objects'
-    parser = oo.ArgumentParser(database="json", description=description)
+    parser = kcidb.oo.argparse.ArgumentParser(database="json",
+                                              description=description)
     args = parser.parse_args()
     oo_client = oo.Client(db.Client(args.database))
     pattern_set = set()
@@ -331,8 +334,8 @@ def ingest_main():
     sys.excepthook = misc.log_and_print_excepthook
     description = 'kcidb-ingest - Load data into a (new) database and ' \
         'generate notifications for new and modified objects'
-    parser = db.ArgumentParser(database="sqlite::memory:",
-                               description=description)
+    parser = kcidb.db.argparse.ArgumentParser(database="sqlite::memory:",
+                                              description=description)
     args = parser.parse_args()
 
     db_client = db.Client(args.database)

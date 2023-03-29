@@ -6,7 +6,6 @@ mapping system to retrieve Kernel CI report data from the database.
 import re
 import argparse
 import textwrap
-
 from kcidb.orm.data import Schema, SCHEMA, Type
 import kcidb.io as io
 import kcidb.misc
