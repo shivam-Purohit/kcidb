@@ -95,29 +95,6 @@ def log_and_print_excepthook(type, value, tb):
     print(format_exception_stack(value), file=sys.stderr)
 
 
-def version(string):
-    """
-    Parse a version string into a tuple with major and minor version numbers
-    (both non-negative integers). Matches the argparse type function
-    interface.
-
-    Args:
-        string: The string representing the version to parse.
-
-    Returns:
-        A tuple containing major and minor version numbers.
-
-    Raises:
-        ValueError if the string was not representing a version.
-    """
-    match = re.fullmatch(r"([0-9]+)\.([0-9]+)", string)
-    if not match:
-        raise argparse.ArgumentTypeError(
-            f"Invalid version: {string!r}"
-        )
-    return int(match.group(1)), int(match.group(2))
-
-
 def json_load_stream_fd(stream_fd, chunk_size=4*1024*1024):
     """
     Load a series of JSON values from a stream file descriptor.
