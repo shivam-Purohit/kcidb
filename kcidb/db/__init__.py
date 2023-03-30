@@ -467,7 +467,7 @@ def init_main():
         help="Specify database schema VERSION to initialize to "
              "(a first column value from kcidb-db-schemas output). "
              "Default is the latest version.",
-        type=kcidb.misc.version
+        type=kcidb.argparse.version
     )
     args = parser.parse_args()
     client = Client(args.database)
@@ -498,7 +498,7 @@ def upgrade_main():
              "Increases in the major number introduce "
              "backwards-incompatible changes, in the minor - "
              "backwards-compatible.",
-        type=kcidb.misc.version
+        type=kcidb.argparse.version
     )
     args = parser.parse_args()
     client = Client(args.database)

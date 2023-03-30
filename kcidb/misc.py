@@ -1,13 +1,11 @@
 """Kernel CI reporting - misc definitions"""
 
-import re
 import os
 import atexit
 import tempfile
 import sys
 import traceback
 import itertools
-import argparse
 import logging
 import json
 from textwrap import indent

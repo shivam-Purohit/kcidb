@@ -156,7 +156,6 @@ def iso_timestamp(string):
     return value
 
 
-
 def version(string):
     """
     Parse a version string into a tuple with major and minor version numbers

@@ -3,6 +3,7 @@
 import argparse
 import kcidb.misc
 import kcidb.argparse
+from kcidb.orm.query import Pattern
 
 # We'll get to it, pylint: disable=too-many-lines
 
@@ -23,7 +24,7 @@ class PatternHelpAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
         print(
-            parser.Pattern.STRING_DOC +
+            Pattern.STRING_DOC +
             "\n" +
             "NOTE: Specifying object ID lists separately is not "
             "supported using\n"
