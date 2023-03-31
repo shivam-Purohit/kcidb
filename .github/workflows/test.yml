@@ -58,10 +58,18 @@ jobs:
           pip3 install --upgrade '.[dev]'
       - name: Check python sources with flake8
         run: "flake8 kcidb *.py"
+        env:
+          KCIDB_HOOKS: "pre-commit"
       - name: Check python sources with pylint
+        env:
+          KCIDB_HOOKS: "pre-commit"
         run: "pylint kcidb *.py"
+        env:
+          KCIDB_HOOKS: "pre-commit"
       - name: Test with pytest
         run: KCIDB_IO_HEAVY_ASSERTS=1 KCIDB_HEAVY_ASSERTS=1 pytest --tb=native
+        env:
+          KCIDB_HOOKS: "pre-commit"
 
   check_auxiliary_files:
 
@@ -83,6 +91,8 @@ jobs:
           pip3 install --upgrade '.[dev]'
       - name: Check YAML files with yamllint
         run: find -name '*.yaml' -or -name '*.yml' | xargs yamllint
+        env:
+          KCIDB_HOOKS: "pre-commit"
       - name: Check test catalog is ordered alphabetically
         run: |
           test_list=$(
