@@ -177,7 +177,7 @@ class QueryArgumentParser(SplitOutputArgumentParser):
         assert all(isinstance(key, str) for key in driver_types.keys())
         assert all(isinstance(value, type) for value in driver_types.values())
         self.driver_types = driver_types
-        super().__init__(driver_types=driver_types, *args, **kwargs)
+        super().__init__(self.driver_types, *args, **kwargs)
 
         self.add_argument(
             '-c', '--checkout-id',
@@ -203,7 +203,22 @@ class QueryArgumentParser(SplitOutputArgumentParser):
             dest="test_ids",
             action='append',
         )
-
+        self.add_argument(
+            '-i', '--issue-id',
+            metavar="ID",
+            default=[],
+            help='ID of an issue to match',
+            dest="issue_ids",
+            action='append',
+        )
+        self.add_argument(
+            '-n', '--incident-id',
+            metavar="ID",
+            default=[],
+            help='ID of an incident to match',
+            dest="incident_ids",
+            action='append',
+        )
         self.add_argument(
             '--parents',
             help='Match parents of matching objects',
