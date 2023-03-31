@@ -17,7 +17,7 @@ import kcidb.io as io
 import kcidb.orm
 from kcidb import misc
 from kcidb.misc import LIGHT_ASSERTS
-
+import kcidb.argparse
 
 # Module's logger
 LOGGER = logging.getLogger(__name__)
@@ -617,7 +617,7 @@ def argparse_add_args(parser):
     )
 
 
-class ArgumentParser(misc.ArgumentParser):
+class ArgumentParser(argparse.ArgumentParser):
     """
     Command-line argument parser with common message queue arguments added.
     """
@@ -665,7 +665,7 @@ def argparse_publisher_add_args(parser, data_name):
     )
 
 
-class PublisherArgumentParser(misc.ArgumentParser):
+class PublisherArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common message queue arguments added.
     """
@@ -729,7 +729,7 @@ def argparse_subscriber_add_args(parser, data_name):
         '-m',
         '--messages',
         metavar="NUMBER",
-        type=misc.non_negative_int_or_inf,
+        type=kcidb.argparse.non_negative_int_or_inf,
         help='Pull maximum NUMBER of messages, or "inf" for infinity. '
              'Default is 1.',
         default=1,
@@ -742,7 +742,7 @@ def argparse_subscriber_add_args(parser, data_name):
     )
 
 
-class SubscriberArgumentParser(misc.ArgumentParser):
+class SubscriberArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with message queue subscriber arguments
     added.
@@ -794,7 +794,7 @@ def io_subscriber_main():
         'kcidb-mq-io-subscriber - ' \
         'Kernel CI I/O data subscriber management tool'
     parser = SubscriberArgumentParser("I/O data", description=description)
-    misc.argparse_output_add_args(parser.subparsers["pull"])
+    kcidb.argparse.output_add_args(parser.subparsers["pull"])
     args = parser.parse_args()
     subscriber = IOSubscriber(args.project, args.topic, args.subscription)
     if args.command == "init":

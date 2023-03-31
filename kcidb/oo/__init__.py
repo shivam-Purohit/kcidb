@@ -779,7 +779,7 @@ class Client:
             self.cache.reset()
 
 
-class ArgumentParser(kcidb.misc.ArgumentParser):
+class ArgumentParser(kcidb.argparse.ArgumentParser):
     """
     Command-line argument parser with common OO arguments added.
     """
@@ -796,11 +796,11 @@ class ArgumentParser(kcidb.misc.ArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        kcidb.db.argparse_add_args(self, database=database)
+        kcidb.db.argparse.add_args(self, database=database)
         kcidb.orm.argparse_add_args(self)
 
 
-class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
+class OutputArgumentParser(kcidb.argparse.OutputArgumentParser):
     """
     Command-line argument parser for tools outputting JSON,
     with common OO arguments added.
@@ -818,7 +818,7 @@ class OutputArgumentParser(kcidb.misc.OutputArgumentParser):
             kwargs:     Keyword arguments to initialize ArgumentParser with.
         """
         super().__init__(*args, **kwargs)
-        kcidb.db.argparse_add_args(self, database=database)
+        kcidb.db.argparse.add_args(self, database=database)
         kcidb.orm.argparse_add_args(self)
 
 
